@@ -2,8 +2,8 @@
 
 import { Book } from "@/src/types";
 
-export function storeBook(book: Book) {}
+export function storeBookLocalStorage(book: Book) {}
 
-export function retriveBook(id: string) {}
+export function retriveBookLocalStorage(id: string) {}
 
-export function deleteBook(id: string) {}
+export function deleteBookLocalStorage(id: string) {}
