@@ -21,3 +21,9 @@ export function base64ToImage(base64: string): string {
 
   return imageURL;
 }
+
+export function parseGeminiJSON<T>(response: string): T {
+  const cleaned = response.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+
+  return JSON.parse(cleaned) as T;
+}
