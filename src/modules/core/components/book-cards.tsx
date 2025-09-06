@@ -10,16 +10,11 @@ export default function BookCard(props: IBookCard) {
       }`}
       onClick={props.onClick}
     >
-      {
+      {props.formats && (
         <figure>
-          <img
-            src={
-              "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            }
-            alt="Book"
-          />
+          <img src={props.formats["image/jpeg"]} alt="Book" />
         </figure>
-      }
+      )}
       <div className="card-body p-2">
         <p>{props.title}</p>
       </div>
