@@ -1,20 +1,5 @@
 "use client";
 
-import { Book } from "@/src/types";
-
-export function storeBookLocalStorage(book: Book) {
-  localStorage.setItem(String(book.id), JSON.stringify(book));
-}
-
-export function retriveBookLocalStorage(id: string) {
-  const book = localStorage.getItem(id);
-  return book ? JSON.parse(book) : null;
-}
-
-export function deleteBookLocalStorage(id: string) {
-  localStorage.removeItem(id);
-}
-
 export async function cache<T, Args extends any[]>(
   serverAction: (...args: Args) => Promise<T>,
   ...args: Args
@@ -23,6 +8,7 @@ export async function cache<T, Args extends any[]>(
   const cachedData = localStorage.getItem(key);
 
   if (cachedData) {
+    console.log("USED CACHED DATA", cachedData);
     return JSON.parse(cachedData);
   }
 

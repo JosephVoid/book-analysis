@@ -7,6 +7,7 @@ import searchBooksAction from "../../book-fetch/lib/actions/search-books.action"
 import { useAsync } from "../hooks/useAsync";
 import BookCard from "./book-cards";
 import Spinner from "./spinner";
+import { cache } from "../../book-fetch/lib/utils/cache";
 
 export default function Header({
   onBookSelect,
@@ -26,13 +27,13 @@ export default function Header({
     const isId = !isNaN(Number(searchStr));
 
     if (isId) {
-      const result = await fetchBookById(searchStr);
+      const result = await cache(fetchBookById, searchStr);
       if (result) {
         handleBookSelect(result);
         setBookOptions([result]);
       }
     } else {
-      const result = await searchBooks(searchStr);
+      const result = await cache(searchBooks, searchStr);
       if (result) {
         setBookOptions(result);
       }
@@ -45,7 +46,10 @@ export default function Header({
   };
 
   return (
-    <section className="flex flex-col gap-6 justify-center items-center mb-10">
+    <section
+      className="flex flex-col gap-6 justify-center items-center mb-10 h-screen"
+      id="header"
+    >
       <h1 className="text-5xl font-extrabold text-center">
         Analyze Books with AI
       </h1>

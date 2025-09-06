@@ -20,10 +20,20 @@ export default function CharacterGraph({
   );
 
   return (
-    <section className="flex flex-col gap-6 justify-center py-5">
-      <h3 className="text-2xl font-bold">Characters and Interactions</h3>
+    <section
+      className="flex flex-col gap-4 justify-center py-5 h-screen"
+      id="graph"
+    >
+      <div>
+        <h3 className="text-2xl font-bold mb-0">
+          Characters and their Interactions
+        </h3>
+        <p className="text-xs m-0">
+          Click on a character or connection to know more
+        </p>
+      </div>
       <ForceGraph
-        height={300}
+        height={500}
         width={700}
         graphData={data}
         backgroundColor="#eeeeee"
@@ -39,7 +49,7 @@ export default function CharacterGraph({
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillStyle = "black";
-          ctx.fillText(label, node.x, node.y + 10);
+          ctx.fillText(label, node.x, node.y + 15);
 
           // Draw image or circle
           const size = 40 / globalScale;

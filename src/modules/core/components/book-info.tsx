@@ -2,6 +2,7 @@ import { Book, Character } from "@/src/types";
 import { useAsync } from "../hooks/useAsync";
 import getCharactersAction from "../../book-analyze/lib/actions/get-characters.actions";
 import Spinner from "./spinner";
+import { cache } from "../../book-fetch/lib/utils/cache";
 
 export default function BookInfo({
   onCharactersSet,
@@ -11,7 +12,8 @@ export default function BookInfo({
     useAsync(getCharactersAction);
 
   const handleAnalyze = async () => {
-    const result = await getCharacters(
+    const result = await cache(
+      getCharacters,
       book.formats["text/plain; charset=us-ascii"]
     );
     if (result) {
@@ -20,7 +22,10 @@ export default function BookInfo({
   };
 
   return (
-    <section className="flex flex-col gap-6 justify-center py-5">
+    <section
+      className="flex flex-col gap-6 justify-center py-5 h-screen"
+      id="book-info"
+    >
       <h1 className="text-5xl font-extrabold">{book.title}</h1>
       <div className="flex gap-3">
         <div className="w-1/4">
