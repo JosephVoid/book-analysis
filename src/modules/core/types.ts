@@ -13,7 +13,7 @@ export interface ForceGraphNode {
 export interface ForceGraphLink {
   source: string;
   target: string;
-  count?: number;
+  count: number;
 }
 
 export interface ForceGraphData {

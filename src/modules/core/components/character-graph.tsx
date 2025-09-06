@@ -58,8 +58,8 @@ export default function CharacterGraph({
           width={700}
           height={500}
           graphData={data}
-          backgroundColor="#eeeeee"
-          linkWidth={3}
+          backgroundColor="#f7f7f7"
+          linkWidth={(link) => link.count * 3}
           onNodeClick={handleNodeClick}
           onLinkClick={handleLineClick}
           nodeCanvasObject={(node: any, ctx, globalScale) => {
