@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { Character } from "@/src/types";
 import { charactersToGraphData } from "@/src/utils/helpers";
 import React from "react";
+import DetailCard from "./detail-card";
+import { ICardDetail } from "../types";
 
 const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
@@ -14,10 +16,23 @@ export default function CharacterGraph({
 }: {
   characters: Character[];
 }) {
+  const [detail, setDetail] = React.useState<ICardDetail | null>(null);
+
   const data = React.useMemo(
     () => charactersToGraphData(characters),
     [characters]
   );
+
+  const handleNodeClick = (node: any) => {
+    setDetail({ character: node as Character });
+  };
+
+  const handleLineClick = (link: any) => {
+    console.log({ link });
+    setDetail({
+      link: { source: link.source, target: link.target, count: link.count },
+    });
+  };
 
   return (
     <section
@@ -32,66 +47,74 @@ export default function CharacterGraph({
           Click on a character or connection to know more
         </p>
       </div>
-      <ForceGraph
-        height={500}
-        width={700}
-        graphData={data}
-        backgroundColor="#eeeeee"
-        linkWidth={3}
-        onNodeClick={(node: any) => console.log({ node })}
-        onLinkClick={(line: any) => console.log({ line })}
-        nodeCanvasObject={(node: any, ctx, globalScale) => {
-          const label = node.id;
-          const fontSize = 12 / globalScale;
-          ctx.font = `${fontSize}px Sans-Serif`;
+      <div className="relative">
+        <DetailCard
+          onClose={() => setDetail(null)}
+          character={detail?.character}
+          link={detail?.link}
+          open={!!detail}
+        />
+        <ForceGraph
+          width={700}
+          height={500}
+          graphData={data}
+          backgroundColor="#eeeeee"
+          linkWidth={3}
+          onNodeClick={handleNodeClick}
+          onLinkClick={handleLineClick}
+          nodeCanvasObject={(node: any, ctx, globalScale) => {
+            const label = node.id;
+            const fontSize = 12 / globalScale;
+            ctx.font = `${fontSize}px Sans-Serif`;
 
-          // Draw label
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = "black";
-          ctx.fillText(label, node.x, node.y + 15);
+            // Draw label
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "black";
+            ctx.fillText(label, node.x, node.y + 15);
 
-          // Draw image or circle
-          const size = 40 / globalScale;
-          if (node.img) {
-            const img = new Image();
-            img.src = node.img;
+            // Draw image or circle
+            const size = 40 / globalScale;
+            if (node.img) {
+              const img = new Image();
+              img.src = node.img;
 
-            ctx.save();
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, size / 2, 0, Math.PI * 2, true);
+              ctx.closePath();
+              ctx.clip();
+
+              ctx.drawImage(
+                img,
+                node.x - size / 2,
+                node.y - size / 2,
+                size,
+                size
+              );
+
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, size / 2, 0, Math.PI * 2, true);
+              ctx.clip();
+              ctx.closePath();
+              ctx.restore();
+            } else {
+              // Draw a circle if no image
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, size / 2, 0, 2 * Math.PI, false);
+              ctx.fillStyle = "grey";
+              ctx.fill();
+            }
+          }}
+          nodePointerAreaPaint={(node, color, ctx) => {
+            const size = 20;
+            ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.arc(node.x, node.y, size / 2, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-
-            ctx.drawImage(
-              img,
-              node.x - size / 2,
-              node.y - size / 2,
-              size,
-              size
-            );
-
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, size / 2, 0, Math.PI * 2, true);
-            ctx.clip();
-            ctx.closePath();
-            ctx.restore();
-          } else {
-            // Draw a circle if no image
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, size / 2, 0, 2 * Math.PI, false);
-            ctx.fillStyle = "grey";
+            ctx.arc(node.x!, node.y!, size / 2, 0, 2 * Math.PI, false);
             ctx.fill();
-          }
-        }}
-        nodePointerAreaPaint={(node, color, ctx) => {
-          const size = 40;
-          ctx.fillStyle = color;
-          ctx.beginPath();
-          ctx.arc(node.x!, node.y!, size / 2, 0, 2 * Math.PI, false);
-          ctx.fill();
-        }}
-      />
+          }}
+        />
+      </div>
     </section>
   );
 }

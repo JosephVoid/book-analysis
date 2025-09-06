@@ -38,7 +38,9 @@ export function parseGeminiJSON<T>(response: string): T {
 export function charactersToGraphData(characters: Character[]): ForceGraphData {
   const nodes: ForceGraphNode[] = characters.map((char) => ({
     id: char.name,
+    name: char.name,
     img: char.avatar,
+    description: char.description,
   }));
 
   const links: ForceGraphLink[] = [];
@@ -57,7 +59,7 @@ export function charactersToGraphData(characters: Character[]): ForceGraphData {
       );
 
       if (!exists) {
-        links.push({ source, target, value: interaction.count });
+        links.push({ source, target, count: interaction.count });
       }
     });
   });

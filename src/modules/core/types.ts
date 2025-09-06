@@ -1,4 +1,4 @@
-import { Book } from "@/src/types";
+import { Book, Character } from "@/src/types";
 
 export interface IBookCard extends Partial<Book> {
   selected: boolean;
@@ -13,10 +13,19 @@ export interface ForceGraphNode {
 export interface ForceGraphLink {
   source: string;
   target: string;
-  value?: number;
+  count?: number;
 }
 
 export interface ForceGraphData {
   nodes: ForceGraphNode[];
   links: ForceGraphLink[];
+}
+
+export interface ICardDetail {
+  character?: Character;
+  link?: {
+    source: Character;
+    target: Character;
+    count: number;
+  };
 }
