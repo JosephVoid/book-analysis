@@ -7,7 +7,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function generateAvatarAction(
   character: Character,
-  book: Book
+  bookTitle: string
 ) {
   try {
     const genAI = new GoogleGenerativeAI(GEMINI_KEY);
@@ -15,7 +15,9 @@ export default async function generateAvatarAction(
       model: "gemini-2.5-flash-lite",
     });
 
-    const prompt = `Please generate an avatar for this character: \nname: ${character.name}, description: ${character.description}, from the book (if you know it): ${book.title}\n make the art style clean, flat-style 2D illustrations. Return the image in base64 formated string`;
+    const prompt = `Please generate an avatar for this character: \n
+    name: ${character.name}, description: ${character.description}, from the book (if you know it): ${bookTitle}\n 
+    make the art style clean, flat-style 2D illustrations. Return the image in base64 formated string`;
 
     const result = await model.generateContent(prompt);
 

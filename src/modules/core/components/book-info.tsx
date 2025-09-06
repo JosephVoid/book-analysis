@@ -11,7 +11,9 @@ export default function BookInfo({
     useAsync(getCharactersAction);
 
   const handleAnalyze = async () => {
-    const result = await getCharacters(book);
+    const result = await getCharacters(
+      book.formats["text/plain; charset=us-ascii"]
+    );
     if (result) {
       onCharactersSet(result);
     }

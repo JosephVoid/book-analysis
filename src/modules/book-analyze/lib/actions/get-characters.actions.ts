@@ -7,7 +7,7 @@ import { parseGeminiJSON } from "@/src/utils/helpers";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function getCharactersAction(
-  book: Book
+  bookTextUrl: string
 ): Promise<Character[] | null> {
   try {
     const genAI = new GoogleGenerativeAI(GEMINI_KEY);
@@ -15,7 +15,7 @@ export default async function getCharactersAction(
       model: "gemini-2.0-flash-001",
     });
 
-    const text = await fetchBookText(book);
+    const text = await fetchBookText(bookTextUrl);
 
     if (!text) return null;
 

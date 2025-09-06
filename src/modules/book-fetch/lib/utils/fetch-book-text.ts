@@ -1,12 +1,9 @@
-import { Book } from "@/src/types";
 import axios from "axios";
 import { getFirstTwoChapters } from "./get-chapters";
 
-export default async function fetchBookText(book: Book) {
+export default async function fetchBookText(textUrl: string) {
   try {
-    const response = await axios.get(
-      book.formats["text/plain; charset=us-ascii"]
-    );
+    const response = await axios.get(textUrl);
     if (response.statusText !== "OK") return null;
     else return getFirstTwoChapters(response.data);
   } catch (error) {
