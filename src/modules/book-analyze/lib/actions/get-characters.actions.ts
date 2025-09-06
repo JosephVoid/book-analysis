@@ -1,5 +1,6 @@
 "use server";
 
+import fetchBookText from "@/src/modules/book-fetch/lib/utils/fetch-book-text";
 import { Book, Character } from "@/src/types";
 import { GEMINI_KEY } from "@/src/utils/constants";
 import { parseGeminiJSON } from "@/src/utils/helpers";
@@ -14,12 +15,14 @@ export default async function getCharactersAction(
       model: "gemini-2.0-flash-001",
     });
 
-    const text = book.summaries.join(" ");
+    const text = await fetchBookText(book);
 
-    const prompt = `Please analyze the following book text and provide a list of the main characters with a brief description of each. Return the data as a JSON array of objects, where each object has "name" and "description" properties. Do not include any other text in the response.\n\n${text.substring(
-      0,
-      10000
-    )}`;
+    if (!text) return null;
+
+    const prompt = `Please analyze the following book text and provide a list of the main 
+    characters with a brief description of each and thier interactions with other characters. 
+    Return the data as a JSON array of objects, where each object has "name", "description", "interactions" properties. 
+    The "interactions" property must be in the shape of {name: string;count: number;}[]. Do not include any other text in the response.\n\n\n${text}`;
 
     const result = await model.generateContent(prompt);
 

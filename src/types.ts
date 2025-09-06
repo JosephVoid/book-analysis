@@ -22,4 +22,8 @@ export interface Character {
   name: string;
   description: string;
   avatar?: string;
+  interactions: {
+    name: string;
+    count: number;
+  }[];
 }
