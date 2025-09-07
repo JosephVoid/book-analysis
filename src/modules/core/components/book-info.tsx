@@ -27,25 +27,34 @@ export default function BookInfo({
       id="book-info"
     >
       <h1 className="text-5xl font-extrabold">{book.title}</h1>
-      <div className="flex gap-3">
-        <div className="w-1/4">
-          <img src={book.formats["image/jpeg"]} />
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-3">
+          <div className="w-1/4">
+            <img src={book.formats["image/jpeg"]} />
+          </div>
+          <div className="w-3/4 flex flex-col gap-4">
+            <p className="text-xs line-clamp-[8]">{book.summaries.join(" ")}</p>
+            <p className="text-xs">
+              by
+              {book.authors.map((author) => (
+                <span key={author.name}> {author.name} </span>
+              ))}
+            </p>
+            <div className="flex gap-1 flex-wrap">
+              {book.subjects.map((subject) => (
+                <div
+                  key={subject}
+                  className="badge badge-soft badge-primary text-xs"
+                >
+                  {subject}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="w-3/4 flex flex-col gap-4">
-          <p className="text-xs line-clamp-[8]">{book.summaries.join(" ")}</p>
-          <p className="text-xs">
-            by
-            {book.authors.map((author) => (
-              <span key={author.name}> {author.name} </span>
-            ))}
-          </p>
-          <button
-            className="btn btn-soft rounded-xs btn-primary"
-            onClick={handleAnalyze}
-          >
-            {getCharactersLoading ? <Spinner /> : "Analyze with Gemini"}
-          </button>
-        </div>
+        <button className="btn rounded-xs btn-primary" onClick={handleAnalyze}>
+          {getCharactersLoading ? <Spinner /> : "Analyze with Gemini"}
+        </button>
       </div>
     </section>
   );
