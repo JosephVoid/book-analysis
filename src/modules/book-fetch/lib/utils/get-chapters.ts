@@ -16,7 +16,6 @@ export function getFirstTwoChapters(bookText: string) {
     );
   }
 
-  // Regex Split
   const chapterRegex = /(chapter\s+(\d+|[ivxlcdm]+)[^\n]*)/gi;
   const parts = cleanText.split(chapterRegex);
 
@@ -38,6 +37,5 @@ export function getFirstTwoChapters(bookText: string) {
     }
   }
 
-  // Fallback
-  return cleanText.slice(0, 15000);
+  return cleanText.slice(0, 30000);
 }

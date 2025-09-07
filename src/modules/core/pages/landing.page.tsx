@@ -6,10 +6,35 @@ import CharacterGraph from "../components/character-graph";
 import React from "react";
 import BookInfo from "../components/book-info";
 import CharacterAvatarProvider from "@/src/utils/character-provider";
+import NavBar from "../components/nav-bar";
 
 export default function LandingPage() {
   const [book, setBook] = React.useState<Book | null>(null);
   const [characters, setCharacters] = React.useState<Character[] | null>(null);
+  const [showNav, setShowNav] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const bookInfo = document.getElementById("book-info");
+      const characterGraph = document.getElementById("graph");
+      if (bookInfo || characterGraph) {
+        const bookInfoTop = bookInfo?.getBoundingClientRect().top ?? Infinity;
+        const characterGraphTop =
+          characterGraph?.getBoundingClientRect().top ?? Infinity;
+        console.log({ bookInfoTop, characterGraphTop });
+        if (bookInfoTop - 1 < 0 || characterGraphTop < 0) {
+          setShowNav(true);
+        } else {
+          setShowNav(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [book, characters]);
 
   React.useEffect(() => {
     if (book) {
@@ -35,6 +60,7 @@ export default function LandingPage() {
   return (
     <div className="flex justify-center p-10">
       <div className="w-1/2 flex flex-col">
+        {showNav && <NavBar onBookSelect={handleBookSelect} />}
         {/* Search Bar */}
         <Header onBookSelect={handleBookSelect} />
         {/* Book */}

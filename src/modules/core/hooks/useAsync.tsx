@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
+// Inspired by https://medium.com/@sergeyleschev/react-custom-hook-useasync-8fe13f4d4032
 export function useAsync<Fn extends (...args: any[]) => Promise<any>>(
   fn: Fn,
   onMount?: boolean,

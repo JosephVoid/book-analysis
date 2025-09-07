@@ -22,19 +22,16 @@ export default function CharacterGraph({
   const [detail, setDetail] = React.useState<ICardDetail | null>(null);
   const characterContext = React.useContext(CharacterContext);
 
-  const data = React.useMemo(
-    () => {
-      const characterAvatars = characterContext?.characters;
-      return charactersToGraphData(
-        characters.map((char) => ({
-          ...char,
-          avatar: characterAvatars?.find((chrtr) => chrtr.name === char.name)
-            ?.avatar,
-        }))
-      );
-    }, // ISSUE
-    [characters, characterContext?.characters]
-  );
+  const data = React.useMemo(() => {
+    const characterAvatars = characterContext?.characters;
+    return charactersToGraphData(
+      characters.map((char) => ({
+        ...char,
+        avatar: characterAvatars?.find((chrtr) => chrtr.name === char.name)
+          ?.avatar,
+      }))
+    );
+  }, [characters, characterContext?.characters]);
 
   const handleNodeClick = (node: any) => {
     setDetail({ character: node as Character });
