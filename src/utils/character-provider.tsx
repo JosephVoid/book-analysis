@@ -14,10 +14,6 @@ export default function CharacterAvatarProvider({
 }) {
   const [characters, setCharacters] = React.useState<Character[]>([]);
 
-  React.useEffect(() => {
-    setCharacters((chars) => loadAvatars(chars));
-  }, []);
-
   const handleCharacterSet = (character: Character) => {
     setCharacters((chars) => {
       const exists = chars.some((c) => c.name === character.name);

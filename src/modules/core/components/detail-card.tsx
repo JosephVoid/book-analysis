@@ -28,7 +28,7 @@ export default function DetailCard({
       const result = await generateAvatar(character);
       if (result) {
         // Cache Image
-        localStorage.setItem(character.name, result);
+        // localStorage.setItem(character.name, result);
         // Set to State
         characterContext?.characterSetter({ ...character, avatar: result });
         setCharacterImage(result);

@@ -23,7 +23,16 @@ export default function CharacterGraph({
   const characterContext = React.useContext(CharacterContext);
 
   const data = React.useMemo(
-    () => charactersToGraphData(loadAvatars(characters)),
+    () => {
+      const characterAvatars = characterContext?.characters;
+      return charactersToGraphData(
+        characters.map((char) => ({
+          ...char,
+          avatar: characterAvatars?.find((chrtr) => chrtr.name === char.name)
+            ?.avatar,
+        }))
+      );
+    }, // ISSUE
     [characters, characterContext?.characters]
   );
 
