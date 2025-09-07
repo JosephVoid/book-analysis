@@ -39,5 +39,5 @@ export function getFirstTwoChapters(bookText: string) {
   }
 
   // Fallback
-  return cleanText.slice(0, 7500);
+  return cleanText.slice(0, 15000);
 }
