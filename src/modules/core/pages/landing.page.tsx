@@ -5,7 +5,7 @@ import { Book, Character } from "@/src/types";
 import CharacterGraph from "../components/character-graph";
 import React from "react";
 import BookInfo from "../components/book-info";
-import CharacterAvatarProvider from "@/src/utils/character-provider";
+import AppProvider from "@/src/utils/app-provider";
 import NavBar from "../components/nav-bar";
 
 export default function LandingPage() {
@@ -21,7 +21,6 @@ export default function LandingPage() {
         const bookInfoTop = bookInfo?.getBoundingClientRect().top ?? Infinity;
         const characterGraphTop =
           characterGraph?.getBoundingClientRect().top ?? Infinity;
-        console.log({ bookInfoTop, characterGraphTop });
         if (bookInfoTop - 1 < 0 || characterGraphTop < 0) {
           setShowNav(true);
         } else {
@@ -59,19 +58,17 @@ export default function LandingPage() {
 
   return (
     <div className="flex justify-center p-10">
-      <div className="w-1/2 flex flex-col">
-        {showNav && <NavBar onBookSelect={handleBookSelect} />}
-        {/* Search Bar */}
-        <Header onBookSelect={handleBookSelect} />
-        {/* Book */}
-        {book && <BookInfo {...book} onCharactersSet={setCharacters} />}
-        {/* Analysis */}
-        {characters && (
-          <CharacterAvatarProvider>
-            <CharacterGraph characters={characters} />
-          </CharacterAvatarProvider>
-        )}
-      </div>
+      <AppProvider>
+        <div className="w-1/2 flex flex-col">
+          {showNav && <NavBar onBookSelect={handleBookSelect} />}
+          {/* Search Bar */}
+          <Header onBookSelect={handleBookSelect} />
+          {/* Book */}
+          {book && <BookInfo {...book} onCharactersSet={setCharacters} />}
+          {/* Analysis */}
+          {characters && <CharacterGraph characters={characters} />}
+        </div>
+      </AppProvider>
     </div>
   );
 }

@@ -1,18 +1,17 @@
 import React, { ReactNode } from "react";
-import { Character } from "../types";
+import { Book, Character } from "../types";
 import { loadAvatars } from "./helpers";
 
-export const CharacterContext = React.createContext<{
+export const AppContext = React.createContext<{
   characters: Character[];
+  book: Book | null;
   characterSetter: (chars: Character) => void;
+  bookSetter: (book: Book) => void;
 } | null>(null);
 
-export default function CharacterAvatarProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function AppProvider({ children }: { children: ReactNode }) {
   const [characters, setCharacters] = React.useState<Character[]>([]);
+  const [book, setBook] = React.useState<Book | null>(null);
 
   const handleCharacterSet = (character: Character) => {
     setCharacters((chars) => {
@@ -25,11 +24,20 @@ export default function CharacterAvatarProvider({
     });
   };
 
+  const handleBookSet = (book: Book) => {
+    setBook(book);
+  };
+
   return (
-    <CharacterContext.Provider
-      value={{ characters, characterSetter: handleCharacterSet }}
+    <AppContext.Provider
+      value={{
+        characters,
+        characterSetter: handleCharacterSet,
+        book: book,
+        bookSetter: handleBookSet,
+      }}
     >
       {children}
-    </CharacterContext.Provider>
+    </AppContext.Provider>
   );
 }

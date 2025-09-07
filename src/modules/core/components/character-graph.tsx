@@ -6,9 +6,7 @@ import { charactersToGraphData, loadAvatars } from "@/src/utils/helpers";
 import React from "react";
 import DetailCard from "./detail-card";
 import { ICardDetail } from "../types";
-import CharacterProvider, {
-  CharacterContext,
-} from "@/src/utils/character-provider";
+import CharacterProvider, { AppContext } from "@/src/utils/app-provider";
 
 const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
@@ -20,7 +18,7 @@ export default function CharacterGraph({
   characters: Character[];
 }) {
   const [detail, setDetail] = React.useState<ICardDetail | null>(null);
-  const characterContext = React.useContext(CharacterContext);
+  const characterContext = React.useContext(AppContext);
 
   const data = React.useMemo(() => {
     const characterAvatars = characterContext?.characters;
@@ -58,12 +56,14 @@ export default function CharacterGraph({
         </p>
       </div>
       <div className="relative">
-        <DetailCard
-          onClose={() => setDetail(null)}
-          character={detail?.character}
-          link={detail?.link}
-          open={!!detail}
-        />
+        {detail && (
+          <DetailCard
+            onClose={() => setDetail(null)}
+            character={detail?.character}
+            link={detail?.link}
+            open={!!detail}
+          />
+        )}
         <ForceGraph
           width={700}
           height={500}

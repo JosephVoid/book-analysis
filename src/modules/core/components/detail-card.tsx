@@ -7,7 +7,9 @@ import { ICardDetail } from "../types";
 import { useAsync } from "../hooks/useAsync";
 import generateAvatarAction from "../../book-analyze/lib/actions/generate-avatars.action";
 import Spinner from "./spinner";
-import { CharacterContext } from "@/src/utils/character-provider";
+import { AppContext } from "@/src/utils/app-provider";
+import getInteractionAction from "../../book-analyze/lib/actions/get-interaction.action";
+import { cache } from "../../book-fetch/lib/utils/cache";
 
 export default function DetailCard({
   character,
@@ -18,10 +20,22 @@ export default function DetailCard({
   const [characterImage, setCharacterImage] = React.useState<string | null>(
     null
   );
-  const characterContext = React.useContext(CharacterContext);
+
+  const characterContext = React.useContext(AppContext);
 
   const { run: generateAvatar, loading: generateAvatarLoading } =
     useAsync(generateAvatarAction);
+
+  const { data: interactionData, loading: interactionLoading } = useAsync(
+    cache,
+    true,
+    [
+      getInteractionAction,
+      characterContext?.book?.title,
+      link?.source.name,
+      link?.target.name,
+    ]
+  );
 
   const handleCharacterVisualize = async () => {
     if (character) {
@@ -104,6 +118,15 @@ export default function DetailCard({
             <p className="text-center">
               Interacted {link.count === 1 ? "once" : `${link.count} times`}
             </p>
+            {!interactionLoading ? (
+              <p className="text-xs text-center my-2 italic">
+                {interactionData as string}
+              </p>
+            ) : (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            )}
           </div>
         )}
       </div>

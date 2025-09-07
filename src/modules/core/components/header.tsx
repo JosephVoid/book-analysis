@@ -8,6 +8,7 @@ import { useAsync } from "../hooks/useAsync";
 import BookCard from "./book-cards";
 import Spinner from "./spinner";
 import { cache } from "../../book-fetch/lib/utils/cache";
+import { AppContext } from "@/src/utils/app-provider";
 
 export default function Header({
   onBookSelect,
@@ -18,6 +19,8 @@ export default function Header({
   const [error, setError] = React.useState<string | null>(null);
   const [selectedBook, setSelectedBook] = React.useState<Book | null>(null);
   const [bookOptions, setBookOptions] = React.useState<Book[]>([]);
+
+  const characterContext = React.useContext(AppContext);
 
   const { run: fetchBookById, loading: fetchBookByIdLoading } =
     useAsync(fetchBookAction);
@@ -49,6 +52,7 @@ export default function Header({
   const handleBookSelect = (book: Book) => {
     setSelectedBook(book);
     onBookSelect(book);
+    characterContext?.bookSetter(book);
   };
 
   return (
@@ -57,6 +61,9 @@ export default function Header({
       id="header"
     >
       <h1 className="text-5xl font-extrabold text-center">
+        <span className="text-9xl">✨</span>
+        <br />
+        <br />
         Analyze Books with AI
       </h1>
       <div className="flex flex-col gap-2">
@@ -83,6 +90,9 @@ export default function Header({
               className="grow"
               placeholder="Enter Book ID or title..."
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" ? handleBookFetch(search) : null
+              }
             />
           </label>
           <button
