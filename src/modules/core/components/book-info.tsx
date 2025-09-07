@@ -3,6 +3,9 @@ import { useAsync } from "../hooks/useAsync";
 import getCharactersAction from "../../book-analyze/lib/actions/get-characters.actions";
 import Spinner from "./spinner";
 import { cache } from "../../book-fetch/lib/utils/cache";
+import { useContext } from "react";
+import { AppContext } from "@/src/utils/app-provider";
+import { extractUsage } from "@/src/utils/helpers";
 
 export default function BookInfo({
   onCharactersSet,
@@ -11,11 +14,18 @@ export default function BookInfo({
   const { run: getCharacters, loading: getCharactersLoading } =
     useAsync(getCharactersAction);
 
+  const appContext = useContext(AppContext);
+
   const handleAnalyze = async () => {
-    const result = await cache(
+    const response = await cache(
       getCharacters,
       book.formats["text/plain; charset=us-ascii"]
     );
+    const result = extractUsage({
+      response: response,
+      counter: appContext?.tokenCounter!,
+    });
+
     if (result) {
       onCharactersSet(result);
     }

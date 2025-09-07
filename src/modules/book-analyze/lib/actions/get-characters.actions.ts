@@ -8,7 +8,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function getCharactersAction(
   bookTextUrl: string
-): Promise<Character[] | null> {
+): Promise<{ data: Character[] | null; usage: number | undefined } | null> {
   try {
     const genAI = new GoogleGenerativeAI(GEMINI_KEY);
     const model = genAI.getGenerativeModel({
@@ -30,7 +30,10 @@ export default async function getCharactersAction(
 
     const jsonResponse = parseGeminiJSON<Character[]>(result.response.text());
 
-    return jsonResponse;
+    return {
+      data: jsonResponse,
+      usage: result.response.usageMetadata?.totalTokenCount,
+    };
   } catch (error) {
     console.log("ERROR: ", error);
     return null;

@@ -7,11 +7,14 @@ export const AppContext = React.createContext<{
   book: Book | null;
   characterSetter: (chars: Character) => void;
   bookSetter: (book: Book) => void;
+  tokenCount: number;
+  tokenCounter: (count: number) => void;
 } | null>(null);
 
 export default function AppProvider({ children }: { children: ReactNode }) {
   const [characters, setCharacters] = React.useState<Character[]>([]);
   const [book, setBook] = React.useState<Book | null>(null);
+  const [tokens, setTokens] = React.useState<number>(0);
 
   const handleCharacterSet = (character: Character) => {
     setCharacters((chars) => {
@@ -28,6 +31,10 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setBook(book);
   };
 
+  const handleTokenCount = (count: number) => {
+    setTokens((prev) => prev + count);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -35,6 +42,8 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         characterSetter: handleCharacterSet,
         book: book,
         bookSetter: handleBookSet,
+        tokenCount: tokens,
+        tokenCounter: handleTokenCount,
       }}
     >
       {children}

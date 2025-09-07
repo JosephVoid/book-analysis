@@ -27,7 +27,10 @@ export default async function generateAvatarAction(character: Character) {
         console.log(part.text);
       } else if (part.inlineData?.data) {
         const imageData = part.inlineData.data;
-        return base64ToImage(imageData);
+        return {
+          data: base64ToImage(imageData),
+          usage: result.response.usageMetadata?.totalTokenCount,
+        };
       } else return null;
     }
 

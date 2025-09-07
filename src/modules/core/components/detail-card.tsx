@@ -10,6 +10,7 @@ import Spinner from "./spinner";
 import { AppContext } from "@/src/utils/app-provider";
 import getInteractionAction from "../../book-analyze/lib/actions/get-interaction.action";
 import { cache } from "../../book-fetch/lib/utils/cache";
+import { extractUsage } from "@/src/utils/helpers";
 
 export default function DetailCard({
   character,
@@ -27,19 +28,36 @@ export default function DetailCard({
     useAsync(generateAvatarAction);
 
   const { data: interactionData, loading: interactionLoading } = useAsync(
-    cache,
+    React.useCallback(
+      async (
+        title: string | null,
+        char1: string | null,
+        char2: string | null
+      ) => {
+        const response = await cache(getInteractionAction, title, char1, char2);
+        const result = extractUsage({
+          response: response,
+          counter: characterContext?.tokenCounter!,
+        });
+        return result;
+      },
+      []
+    ),
     true,
     [
-      getInteractionAction,
-      characterContext?.book?.title,
-      link?.source.name,
-      link?.target.name,
+      characterContext?.book?.title ?? null,
+      link?.source.name ?? null,
+      link?.target.name ?? null,
     ]
   );
 
   const handleCharacterVisualize = async () => {
     if (character) {
-      const result = await generateAvatar(character);
+      const response = await generateAvatar(character);
+      const result = extractUsage({
+        response: response,
+        counter: characterContext?.tokenCounter!,
+      });
       if (result) {
         characterContext?.characterSetter({ ...character, avatar: result });
         setCharacterImage(result);

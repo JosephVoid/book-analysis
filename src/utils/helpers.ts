@@ -55,3 +55,20 @@ export function charactersToGraphData(characters: Character[]): ForceGraphData {
 
   return { nodes, links };
 }
+
+export function extractUsage<T>({
+  response,
+  counter,
+}: {
+  response:
+    | ({
+        data: T;
+        usage: number | undefined;
+      } & { cached?: boolean })
+    | null;
+  counter: (count: number) => void;
+}) {
+  console.log({ response });
+  if (!response?.cached) counter(response?.usage ?? 0);
+  return response?.data ?? null;
+}
