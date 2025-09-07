@@ -5,19 +5,16 @@ import { GEMINI_KEY } from "@/src/utils/constants";
 import { base64ToImage } from "@/src/utils/helpers";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export default async function generateAvatarAction(
-  character: Character,
-  bookTitle: string
-) {
+export default async function generateAvatarAction(character: Character) {
   try {
     const genAI = new GoogleGenerativeAI(GEMINI_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-2.5-flash-image-preview",
     });
 
-    const prompt = `Please generate an avatar for this character: \n
-    name: ${character.name}, description: ${character.description}, from the book (if you know it): ${bookTitle}\n 
-    make the art style clean, flat-style 2D illustrations. Return the image in base64 formated string`;
+    const prompt = `Please create an avatar picture for this character: \n
+    name: ${character.name}, description: ${character.description}\n 
+    make the art style clean, flat-style 2D illustrations.`;
 
     const result = await model.generateContent(prompt);
 
@@ -30,8 +27,7 @@ export default async function generateAvatarAction(
         console.log(part.text);
       } else if (part.inlineData?.data) {
         const imageData = part.inlineData.data;
-        const imageURL = base64ToImage(imageData);
-        return imageURL;
+        return base64ToImage(imageData);
       } else return null;
     }
 

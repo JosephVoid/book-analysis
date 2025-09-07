@@ -7,7 +7,7 @@ export interface IBookCard extends Partial<Book> {
 
 export interface ForceGraphNode {
   id: string;
-  img?: string;
+  avatar?: string | null;
 }
 
 export interface ForceGraphLink {

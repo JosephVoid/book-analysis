@@ -8,7 +8,6 @@ export async function cache<T, Args extends any[]>(
   const cachedData = localStorage.getItem(key);
 
   if (cachedData) {
-    console.log("USED CACHED DATA", cachedData);
     return JSON.parse(cachedData);
   }
 

@@ -2,10 +2,13 @@
 
 import dynamic from "next/dynamic";
 import { Character } from "@/src/types";
-import { charactersToGraphData } from "@/src/utils/helpers";
+import { charactersToGraphData, loadAvatars } from "@/src/utils/helpers";
 import React from "react";
 import DetailCard from "./detail-card";
 import { ICardDetail } from "../types";
+import CharacterProvider, {
+  CharacterContext,
+} from "@/src/utils/character-provider";
 
 const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
@@ -17,10 +20,11 @@ export default function CharacterGraph({
   characters: Character[];
 }) {
   const [detail, setDetail] = React.useState<ICardDetail | null>(null);
+  const characterContext = React.useContext(CharacterContext);
 
   const data = React.useMemo(
-    () => charactersToGraphData(characters),
-    [characters]
+    () => charactersToGraphData(loadAvatars(characters)),
+    [characters, characterContext?.characters]
   );
 
   const handleNodeClick = (node: any) => {
@@ -75,9 +79,9 @@ export default function CharacterGraph({
 
             // Draw image or circle
             const size = 40 / globalScale;
-            if (node.img) {
+            if (node.avatar) {
               const img = new Image();
-              img.src = node.img;
+              img.src = node.avatar;
 
               ctx.save();
               ctx.beginPath();

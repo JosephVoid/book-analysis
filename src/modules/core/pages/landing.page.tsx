@@ -5,6 +5,7 @@ import { Book, Character } from "@/src/types";
 import CharacterGraph from "../components/character-graph";
 import React from "react";
 import BookInfo from "../components/book-info";
+import CharacterAvatarProvider from "@/src/utils/character-provider";
 
 export default function LandingPage() {
   const [book, setBook] = React.useState<Book | null>(null);
@@ -39,7 +40,11 @@ export default function LandingPage() {
         {/* Book */}
         {book && <BookInfo {...book} onCharactersSet={setCharacters} />}
         {/* Analysis */}
-        {characters && <CharacterGraph characters={characters} />}
+        {characters && (
+          <CharacterAvatarProvider>
+            <CharacterGraph characters={characters} />
+          </CharacterAvatarProvider>
+        )}
       </div>
     </div>
   );

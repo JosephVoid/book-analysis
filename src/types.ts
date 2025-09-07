@@ -21,7 +21,7 @@ export interface Book {
 export interface Character {
   name: string;
   description: string;
-  avatar?: string;
+  avatar?: string | null;
   interactions: {
     name: string;
     count: number;
