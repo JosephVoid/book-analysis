@@ -37,7 +37,8 @@ export default function LandingPage() {
 
   React.useEffect(() => {
     if (book) {
-      document.getElementById("book-info")?.scrollIntoView({
+      window.scrollTo({
+        top: document.body.scrollHeight,
         behavior: "smooth",
       });
     }
@@ -56,6 +57,17 @@ export default function LandingPage() {
     setCharacters(null);
   };
 
+  const handleCacheClear = () => {
+    localStorage.clear();
+    const button = document.getElementById("cache-btn");
+    if (!button) return;
+    const originalText = button.textContent;
+    button.textContent = "✅ " + originalText;
+    setTimeout(() => {
+      button.textContent = originalText;
+    }, 2000);
+  };
+
   return (
     <div className="flex justify-center p-10">
       <AppProvider>
@@ -67,6 +79,13 @@ export default function LandingPage() {
           {book && <BookInfo {...book} onCharactersSet={setCharacters} />}
           {/* Analysis */}
           {characters && <CharacterGraph characters={characters} />}
+          <button
+            className="btn btn-sm fixed bottom-4 right-4 btn-ghost rounded-xs"
+            onClick={handleCacheClear}
+            id="cache-btn"
+          >
+            Clear Cache
+          </button>
         </div>
       </AppProvider>
     </div>

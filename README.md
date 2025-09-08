@@ -11,6 +11,7 @@ This project is a web application that fetches books from the Gutenberg Project,
 - **Token Counting**: Show the amount of tokens used when analyzing
 - **Avatar Generation**: Generates avatars for the main characters.
 - **Caching**: Caches API responses to improve performance and reduce costs.
+- **Testing**: A Suite of automated tests with Jest
 
 ## Getting Started
 
