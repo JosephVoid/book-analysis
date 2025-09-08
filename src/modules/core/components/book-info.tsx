@@ -21,7 +21,7 @@ export default function BookInfo({
       getCharacters,
       book.formats["text/plain; charset=us-ascii"]
     );
-    if (response.cached) {
+    if (!response.cached) {
       extractUsage({
         response: response.data,
         counter: appContext?.tokenCounter!,

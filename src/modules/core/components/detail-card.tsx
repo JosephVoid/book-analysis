@@ -35,7 +35,7 @@ export default function DetailCard({
         char2: string | null
       ) => {
         const response = await cache(getInteractionAction, title, char1, char2);
-        if (response.cached) {
+        if (!response.cached) {
           extractUsage({
             response: response.data,
             counter: characterContext?.tokenCounter!,
