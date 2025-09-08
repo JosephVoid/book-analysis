@@ -18,12 +18,6 @@ export function loadAvatars(characters: Character[]): Character[] {
   }));
 }
 
-export function parseGeminiJSON<T>(response: string): T {
-  const cleaned = response.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-
-  return JSON.parse(cleaned) as T;
-}
-
 export function charactersToGraphData(characters: Character[]): ForceGraphData {
   const nodes: ForceGraphNode[] = characters.map((char) => ({
     id: char.name,

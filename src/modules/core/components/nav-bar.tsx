@@ -6,6 +6,7 @@ import fetchBookAction from "../../book-fetch/lib/actions/fetch-book.action";
 import { Book } from "@/src/types";
 import { cache } from "../../book-fetch/lib/utils/cache";
 import Spinner from "./spinner";
+import { AppContext } from "@/src/utils/app-provider";
 
 export default function NavBar({
   onBookSelect,
@@ -14,6 +15,8 @@ export default function NavBar({
 }) {
   const [search, setSearch] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
+
+  const characterContext = React.useContext(AppContext);
 
   const { run: fetchBookById, loading: fetchBookByIdLoading } =
     useAsync(fetchBookAction);
@@ -32,6 +35,7 @@ export default function NavBar({
 
   const handleBookSelect = (book: Book) => {
     onBookSelect(book);
+    characterContext?.bookSetter(book);
   };
 
   return (
