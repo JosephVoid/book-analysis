@@ -60,15 +60,13 @@ export function extractUsage<T>({
   response,
   counter,
 }: {
-  response:
-    | ({
-        data: T;
-        usage: number | undefined;
-      } & { cached?: boolean })
-    | null;
+  response: {
+    data: T;
+    usage: number | undefined;
+  } | null;
   counter: (count: number) => void;
 }) {
   console.log({ response });
-  if (!response?.cached) counter(response?.usage ?? 0);
+  counter(response?.usage ?? 0);
   return response?.data ?? null;
 }

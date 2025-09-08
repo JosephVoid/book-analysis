@@ -20,8 +20,8 @@ export default function NavBar({
 
   const handleBookFetch = async (searchStr: string) => {
     const result = await cache(fetchBookById, searchStr);
-    if (result) {
-      handleBookSelect(result);
+    if (result.data) {
+      handleBookSelect(result.data);
     } else {
       setError("Book with id: " + searchStr + " not found!");
       setTimeout(() => {

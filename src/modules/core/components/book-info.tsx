@@ -21,11 +21,13 @@ export default function BookInfo({
       getCharacters,
       book.formats["text/plain; charset=us-ascii"]
     );
-    const result = extractUsage({
-      response: response,
-      counter: appContext?.tokenCounter!,
-    });
-
+    if (response.cached) {
+      extractUsage({
+        response: response.data,
+        counter: appContext?.tokenCounter!,
+      });
+    }
+    const result = response.data?.data;
     if (result) {
       onCharactersSet(result);
     }

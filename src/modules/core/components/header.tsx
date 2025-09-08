@@ -32,9 +32,9 @@ export default function Header({
 
     if (isId) {
       const result = await cache(fetchBookById, searchStr);
-      if (result) {
-        handleBookSelect(result);
-        setBookOptions([result]);
+      if (result.data) {
+        handleBookSelect(result.data);
+        setBookOptions([result.data]);
       } else {
         setError("Book with id: " + searchStr + " not found!");
         setTimeout(() => {
@@ -43,8 +43,8 @@ export default function Header({
       }
     } else {
       const result = await cache(searchBooks, searchStr);
-      if (result) {
-        setBookOptions(result);
+      if (result.data) {
+        setBookOptions(result.data);
       }
     }
   };
