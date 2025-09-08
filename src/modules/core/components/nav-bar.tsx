@@ -35,7 +35,7 @@ export default function NavBar({
   };
 
   return (
-    <nav className="fixed top-0 right-0 left-0 bg-white z-50">
+    <nav className="fixed top-0 right-0 left-0 bg-white z-20">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-16 flex-col p-2 gap-2">
           <div className="flex gap-2 w-fit">

@@ -60,7 +60,7 @@ export default function Header({
       className="flex flex-col gap-6 justify-center items-center mb-10 h-screen relative"
       id="header"
     >
-      <div className="badge badge-dash badge-primary fixed top-8 right-8">
+      <div className="badge badge-dash badge-primary fixed top-8 right-8 z-50">
         {characterContext?.tokenCount} Tokens Used
       </div>
       <h1 className="text-5xl font-extrabold text-center">
